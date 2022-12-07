@@ -1,0 +1,18 @@
+# Official language image. Look for the different tagged releases at:
+# https://hub.docker.com/r/library/python/tags/
+image: python:latest
+
+
+before_script:
+  - python --version  # For debugging
+
+test:
+  script:
+    - echo test
+
+run:
+  script:
+    - python3 -m build
+  artifacts:
+    paths:
+      - dist/*.tar.gz
