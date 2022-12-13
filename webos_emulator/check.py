@@ -114,7 +114,7 @@ def validate_vd_name(name, listing):
             break
         vm = n = i.split("\" ")
         n = vm[0][1:]
-        m = vm[1][1:-1]
+        m = vm[1].strip()[1:-1]
 
         if check_linux_guest(n):
             dl.append((n, m))
