@@ -15,15 +15,17 @@ from subprocess import DEVNULL
 from sys import stderr # TODO: check Python 3.3 above
 from webos_emulator import WebosEmulator
 from webos_emulator.exceptions import DetachError
+import locale
 
 # TODO: set logging level
 STDIN = DEVNULL  # quiet, None for info level
+hostos_encoding = locale.getpreferredencoding()
 
 from webos_emulator.check import detach_image, get_stderr, get_storage_name, get_vboxmanage, is_safe_to_create, is_vd_exists, is_vd_running
 from webos_emulator.check import VBOXM
 
 here = os.path.abspath(os.path.dirname(__file__))
-VD_JSON = json.loads(open(os.path.join(here, "webos-emulator.json"), encoding='utf-8').read())
+VD_JSON = json.loads(open(os.path.join(here, "webos-emulator.json"), encoding=hostos_encoding).read())
 
 def detach_storage(name):
     """detach the image from the vd
@@ -130,7 +132,7 @@ def modify_vd(vd: WebosEmulator, mstr, newname, vmdk):
     if error:
        print("webos-emulator : Popen error %s" % error)
        return False
-    vdinfo = str(vdinfo, 'utf-8').split('\n')
+    vdinfo = str(vdinfo, hostos_encoding).split('\n')
 
     print("following is the current settings of vd")
     for i in vdinfo:

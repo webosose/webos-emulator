@@ -7,9 +7,11 @@ import logging
 import subprocess
 from subprocess import DEVNULL   # TODO: check Python 3.3 above
 import re
+import locale
 
 # TODO: set logging level
 STDIN = DEVNULL  # quiet, None for info level
+hostos_encoding = locale.getpreferredencoding()
 
 def get_stderr():
     """get stderr log level by int
@@ -31,7 +33,7 @@ def get_vboxmanage(command):
 
 VBOXM, VBOXVER = get_vboxmanage("VBoxManage")
 if VBOXVER:
-    VBOXVER = str(VBOXVER, 'utf-8').split('\n')[0]
+    VBOXVER = str(VBOXVER, hostos_encoding).split('\n')[0]
 
 def is_vd_exists(name):
     """Check the given vd is exists
@@ -47,7 +49,7 @@ def is_vd_exists(name):
         result, error = sp.communicate()
     except:
         return False
-    result = str(result, 'utf-8').split('\n')
+    result = str(result, hostos_encoding).split('\n')
     pattern = "^\"" + name + "\""
     for i in result:
         if re.search(pattern, i):
@@ -68,7 +70,7 @@ def check_linux_guest(name):
         result, error = sp.communicate()
     except:
         return False
-    result = str(result, 'utf-8').split('\n')
+    result = str(result, hostos_encoding).split('\n')
     for i in result:
         if i == "":
             break
@@ -103,10 +105,10 @@ def validate_vd_name(name, listing):
     product = "ose"
     rname = ""
     ruuid = ""
-    result = str(result, 'utf-8').split('\n')
+    result = str(result, hostos_encoding).split('\n')
     running_vm = ""
     if result2:
-        result2 = str(result2, 'utf-8').split('\n')
+        result2 = str(result2, hostos_encoding).split('\n')
         running_vm = result2[0].split("\" ")[0][1:]
 
     for i in result:
@@ -153,7 +155,7 @@ def is_vd_running(name):
     if error:
        print("webos-emulator : Popen error %s" % error)
        return False
-    result = str(result, 'utf-8').split('\n')
+    result = str(result, hostos_encoding).split('\n')
     pattern = "^\"" + name + "\""
     for i in result:
         if re.search(pattern, i):
@@ -178,7 +180,7 @@ def get_storage_name(name):
     if error:
        print("webos-emulator : Popen error %s" % error)
        return ""
-    result = str(result, 'utf-8').split('\n')
+    result = str(result, hostos_encoding).split('\n')
     for i in result:
         if i.startswith("Storage Controller Name (0):"):
             found = i.split("Storage Controller Name (0):")
