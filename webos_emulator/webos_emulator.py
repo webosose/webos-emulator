@@ -112,7 +112,7 @@ def modify_vd(vd: WebosEmulator, mstr, newname, vmdk):
     else:
         try:
             if mstr:
-                command = [VBOXM] + ['modifyvm', vd.name] + mstr.split()
+                command = [VBOXM] + ['modifyvm', vd.name] + mstr.split(":")[:-1]
                 subprocess.check_call(command, stdin=STDIN, stdout=DEVNULL, stderr=get_stderr())
             if vmdk != "":
                 command = [VBOXM] + ['storageattach', tname, '--storagectl', storage_name, '--type',

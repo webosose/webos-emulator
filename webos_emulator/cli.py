@@ -100,20 +100,20 @@ def main():
     if args.modify:
         mstr = ""
         if args.memory:
-            mstr = mstr + "--memory " + str(args.memory)
+            mstr = mstr + "--memory:" + str(args.memory) +":"
         if args.vram:
-            mstr = mstr + " --vram " + str(args.vram)
+            mstr = mstr + "--vram:" + str(args.vram)+":"
         if args.cpus:
-            mstr = mstr + " --cpus " + str(args.cpus)
+            mstr = mstr + "--cpus:" + str(args.cpus)+":"
         if args.monitorcount:
-            mstr = mstr + " --monitorcount " + str(args.monitorcount)
+            mstr = mstr + "--monitorcount:" + str(args.monitorcount)+":"
         if args.name:
-            mstr = mstr + " --name " + str(args.name)
+            mstr = mstr + "--name:" + str(args.name)+":"
         if args.ostype:
             if args.ostype != "Linux" and args.ostype != "Linux_64":
                 print("Please specify a correct ostype name: Linux or Linux_64")
                 return 1
-            mstr = mstr + " --ostype " + str(args.ostype)
+            mstr = mstr + "--ostype:" + str(args.ostype)+":"
         vd = WebosEmulator(name, args.vd)
         vmdk = ""
         if args.vmdk:

@@ -185,6 +185,9 @@ def get_storage_name(name):
         if i.startswith("Storage Controller Name (0):"):
             found = i.split("Storage Controller Name (0):")
             return found[1].strip()
+        if i.startswith("#0:"):
+            found = i.split(",")[0].split()[1]
+            return found.strip()[1:-1]
     return ""
 
 def is_safe_to_create(name): # TODO: need to rename the method name
