@@ -1,5 +1,5 @@
 """
-  Copyright (c) 2022 LG Electronics Inc.
+  Copyright (c) 2022-2023 LG Electronics Inc.
   SPDX-License-Identifier: MIT
 """
 
@@ -33,6 +33,7 @@ def detach_storage(name):
     Args:
         name (str): vd name
     """
+    logging.info("detach_storage : %s" % name)
     vdcmd = VBOXM
     command = [vdcmd] + ['storageattach', name, '--storagectl', name, '--type',
                          'hdd', '--medium', 'emptydrive', '--port', '0', '--device', '0']
@@ -64,6 +65,7 @@ def remove_vd(name):
     Args:
         name (str): vd name
     """
+    logging.info("remove_vd : %s" % name)
     if VBOXM == None:
         print("webos-emulator : Please install virtualbox.")
         return False

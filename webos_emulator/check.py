@@ -1,5 +1,5 @@
 """
-  Copyright (c) 2022 LG Electronics Inc.
+  Copyright (c) 2022-2023 LG Electronics Inc.
   SPDX-License-Identifier: MIT
 """
 
@@ -196,7 +196,7 @@ def is_safe_to_create(name): # TODO: need to rename the method name
     :param name:
         the name of emulator
     """
-    
+    logging.info("is_safe_to_create : %s" % name)
     if VBOXM == None:
         print("webos-emulator : Please install virtualbox.")
         return False

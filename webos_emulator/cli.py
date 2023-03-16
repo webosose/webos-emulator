@@ -1,5 +1,5 @@
 """
-  Copyright (c) 2022 LG Electronics Inc.
+  Copyright (c) 2022-2023 LG Electronics Inc.
   SPDX-License-Identifier: MIT
 """
 
@@ -13,7 +13,7 @@ import os
 from webos_emulator import __version__
 from webos_emulator import WebosEmulator
 from webos_emulator.webos_emulator import attach_storage, create_vd, custom_vd, default_vd, delete_vd, hidden_create, modify_vd, set_default, start_vd, stop_vd, VD_JSON
-from webos_emulator.check import VBOXM, validate_vd_name
+from webos_emulator.check import VBOXM, validate_vd_name, is_vd_exists, is_vd_running
 
 def main():
     """webOS Emulator Launcher"""
@@ -32,8 +32,37 @@ def main():
         return 0
     """
    
+    if args.express:
+        vd = WebosEmulator("webos-imagex", "webos-imagex")
+        if args.express != "configured":
+            if is_vd_running(vd.name):
+                print("If you want to launch emulator, please start emualtor as below")
+                print("webos-emulator -x")
+            if os.path.isfile(args.express):
+                vd.image = args.express
+            else:
+                print("webos-emulator : Please check %s exists." % args.express)
+                return 1
+            if VD_JSON['ram']:
+                vd.ram = VD_JSON['ram']
+            create_vd(vd)  # TODO: create webos-emulator class and use
+
+        vd.product = "ose"
+        if is_vd_exists(vd.name):
+            if is_vd_running(vd.name):
+                stop_vd(vd)
+            else:
+                start_vd(vd)
+        else:
+            print("Please specify a vmdk full path to make and launch emulator like below")
+            print("   webos-emulator -x  /path/to/abc.vmdk")
+            print("If you have made the emulator, you can launch or kill the emulator as")
+            print("   webos-emulator -x")
+            return 1
+        return 0
+    
     if args.list:
-        validate_vd_name("webos-imagex", True)
+        validate_vd_name("__list_images__", True)
         return 0
     
     name = ""
@@ -272,6 +301,16 @@ def _parse_args(parser: argparse.ArgumentParser, args: Optional[List] = None) ->
         metavar='<.ova>',
         dest="custom",
         help="Create a emulator with a custom settings using OVF 1.0 file",
+    )
+    vd_grp.add_argument(
+        "-x",
+        "--express",
+        nargs='?',
+        action="store",
+        const="configured",
+        metavar='<.vmdk>',
+        dest="express",
+        help='Launch a emulator if vmdk is given, without vmdk option launch or kill the emulator',
     )
     parser.add_argument(
         "--debug",
