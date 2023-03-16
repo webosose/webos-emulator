@@ -340,8 +340,10 @@ def set_default(vd: WebosEmulator, extended):
         subprocess.check_call(command, stdin=STDIN)
 
         # set usb tablet and sound
-        if os.name == 'nt':
+        if platform.system() == 'Windows':
             command = [VBOXM] + ['modifyvm', name, '--mouse', 'usbtablet', '--audio', 'dsound', '--audioout', 'on', '--audioin', 'on']
+        elif platform.system() == 'Darwin':
+            command = [VBOXM] + ['modifyvm', name, '--mouse', 'usbtablet', '--audio', 'coreaudio', '--audioout', 'on', '--audioin', 'on']
         else:
             command = [VBOXM] + ['modifyvm', name, '--mouse', 'usbtablet', '--audio', 'pulse', '--audioout', 'on', '--audioin', 'on']
         subprocess.check_call(command, stdin=STDIN)
@@ -375,7 +377,7 @@ def set_default(vd: WebosEmulator, extended):
         subprocess.check_call(command, stdin=STDIN)
 
         # serial to null
-        if os.name == 'nt':
+        if platform.system() == 'Windows':
             command = [VBOXM] + ['modifyvm', name, '--uart1', '0x3f8', '4', '--uartmode1', 'file', 'null']
         else:
             command = [VBOXM] + ['modifyvm', name, '--uart1', '0x3f8', '4', '--uartmode1', 'file', '/dev/null']
