@@ -49,15 +49,18 @@ def attach_storage(vdcmd, name, vdimage):
         vdcmd (str): virtualizer command
         name (str): vd name
     """
-    storage_name = get_storage_name(name)
-    if storage_name == "":
-        storage_name = name
-    command = [vdcmd] + ['storageattach', name, '--storagectl', storage_name, '--type',
-                         'hdd', '--port', '0', '--device', '0', '--medium', vdimage]
-    if subprocess.call(command, stdin=STDIN, stderr=get_stderr()) == 0:
-        return True
-    else:
+    try:
+        storage_name = get_storage_name(name)
+        if storage_name == "":
+            storage_name = name
+        command = [vdcmd] + ['storageattach', name, '--storagectl', storage_name, '--type',
+                             'hdd', '--port', '0', '--device', '0', '--medium', vdimage]
+        subprocess.check_call(command, stdin=STDIN, stdout=DEVNULL, stderr=get_stderr())
+    except subprocess.CalledProcessError as e:
+        print("webos-emulator : attach_stroage error")
+        logging.debug("attach_storage error : %s" % e)
         return False
+    return True
 
 def remove_vd(name):
     """remove vd
@@ -225,7 +228,10 @@ def create_vd(vd: WebosEmulator):
         return False
     else: # creation success
         if vd.image: # TODO: just create a vd without an image?
-            attach_storage(VBOXM, name, vd.image)
+            if attach_storage(VBOXM, name, vd.image) == False:
+                print("webos-emulator : The vmdk file is already attached. Please use a new vmdk")
+                remove_vd(name)
+                return False
     return True
         
 def start_vd(vd: WebosEmulator):
@@ -467,7 +473,8 @@ def custom_vd(vd: WebosEmulator, ovafile):
         else: # creation success
             if vd.image: # TODO: just create a vd without an image?
                 if attach_storage(VBOXM, vd.name, vd.image): # TODOL check ok
-                    pass
+                    print("webos-emulator : custom error")
+                    return False
         return True
     else:
         print("webos-emulator : vd is exist. please delete vd before setting custom file")

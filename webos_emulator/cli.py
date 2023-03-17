@@ -45,7 +45,9 @@ def main():
                 return 1
             if VD_JSON['ram']:
                 vd.ram = VD_JSON['ram']
-            create_vd(vd)  # TODO: create webos-emulator class and use
+            if create_vd(vd) == False:  # TODO: create webos-emulator class and use
+                print("webos-emulator : failed")
+                return 1
 
         vd.product = "ose"
         if is_vd_exists(vd.name):
@@ -115,7 +117,8 @@ def main():
                 return 1
         if VD_JSON['ram']:
             vd.ram = VD_JSON['ram']
-        custom_vd(vd, args.custom)  # TODO: create webos-emulator class and use
+        if custom_vd(vd, args.custom) == False:  # TODO: create webos-emulator class and use
+            return 1
         return 0
 
     if args.modify or args.hidden_create or args.start or args.stop or args.delete or args.default:
