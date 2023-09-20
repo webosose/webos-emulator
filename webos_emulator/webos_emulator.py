@@ -247,7 +247,7 @@ def start_vd(vd: WebosEmulator):
                 # signage : LG_WEBOS_SIGNAGE_SDK_HOME + /Emulator/v4.1.7/LG_webOS_SIGNAGE_Emulator.sh
                 if 'LG_WEBOS_TV_SDK_HOME' in os.environ:
                     command = os.environ['LG_WEBOS_TV_SDK_HOME'] + '/Emulator/v' + vd.version + '/LG_webOS_TV_Emulator.sh &'
-                    print("please run : chmod +x " +  os.environ['LG_WEBOS_TV_SDK_HOME'] + "/Resources/Jre/bin/*" )
+                    # print("please run : chmod +x " +  os.environ['LG_WEBOS_TV_SDK_HOME'] + "/Resources/Jre/bin/*" )
                 else:
                     print("webos-emulator : please check installation of TV Emulator")
                     return False

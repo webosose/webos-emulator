@@ -70,7 +70,7 @@ def main():
     name = ""
     uuid = ""
     product = "ose"
-    name,uuid,product = validate_vd_name(args.vd, False)
+    name,uuid,product,version = validate_vd_name(args.vd, False)
     if name == "__VBOX_NOT_INSTALLED__":
         return 1
 
@@ -192,8 +192,10 @@ def main():
         vd = WebosEmulator(name, args.vd)
         if product == "tv":
             vd.product = "tv"
+            vd.version = version
         elif product == "signage":
             vd.product = "signage"
+            vd.version = version
         start_vd(vd)
     elif args.stop:
         vd = WebosEmulator(name, args.vd)

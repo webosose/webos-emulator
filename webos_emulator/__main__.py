@@ -91,6 +91,11 @@ class WebosEmulator:
     def vmdkfile(self):
         """Return webOS emulator full path of vmdkfile """
         return self._vmdkfile
+
+    @property
+    def version(self):
+        """Return webOS emulator version """
+        return self._version
     
     @image.setter
     def image(self, value):
@@ -121,6 +126,11 @@ class WebosEmulator:
     def vmdkfile(self, value):
         """Sets the vmdkfile"""
         self._vmdkfile = value
+
+    @version.setter
+    def version(self, value):
+        """Sets the version"""
+        self._version = value
 
     def create(self):
         """Create a webOS emulator

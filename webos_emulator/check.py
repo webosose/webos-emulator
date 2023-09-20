@@ -105,6 +105,7 @@ def validate_vd_name(name, listing):
     product = "ose"
     rname = ""
     ruuid = ""
+    version = ""
     result = str(result, hostos_encoding).split('\n')
     running_vm = ""
     if result2:
@@ -133,9 +134,11 @@ def validate_vd_name(name, listing):
                 ruuid = j
                 if rname.startswith("LG webOS TV Emulator"):
                     product = "tv"
+                    version = rname.split("LG webOS TV Emulator ")[1]
                 elif rname.startswith("LG webOS SIGNAGE Emulator"):
                     product = "signage"
-    return (rname, ruuid, product)
+                    version = rname.split("LG webOS SIGNAGE Emulator ")[1]
+    return (rname, ruuid, product, version)
 
 def is_vd_running(name):
     """Check the given vd is running
