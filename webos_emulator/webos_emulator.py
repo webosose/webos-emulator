@@ -247,7 +247,7 @@ def start_vd(vd: WebosEmulator):
                 # signage : LG_WEBOS_SIGNAGE_SDK_HOME + /Emulator/v4.1.7/LG_webOS_SIGNAGE_Emulator.sh
                 if 'LG_WEBOS_TV_SDK_HOME' in os.environ:
                     if platform.system() == 'Windows':
-                        command = 'cd ' + os.environ['LG_WEBOS_TV_SDK_HOME'] + '\\Emulator\\v' + vd.version + ' & LG_webOS_TV_Emulator.bat'
+                        command = 'cd ' + os.environ['LG_WEBOS_TV_SDK_HOME'][:3] + ' && cd ' + os.environ['LG_WEBOS_TV_SDK_HOME'] + '\\Emulator\\v' + vd.version + ' && LG_webOS_TV_Emulator.bat'
                     elif platform.system() == 'Darwin':
                         command = 'open ' + os.environ['LG_WEBOS_TV_SDK_HOME'] + '/Emulator/v' + vd.version + '/LG_webOS_TV_Emulator_RCU.app &'
                     else:
