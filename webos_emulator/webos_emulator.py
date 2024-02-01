@@ -246,7 +246,12 @@ def start_vd(vd: WebosEmulator):
             if vd.product == "tv":
                 # signage : LG_WEBOS_SIGNAGE_SDK_HOME + /Emulator/v4.1.7/LG_webOS_SIGNAGE_Emulator.sh
                 if 'LG_WEBOS_TV_SDK_HOME' in os.environ:
-                    command = os.environ['LG_WEBOS_TV_SDK_HOME'] + '/Emulator/v' + vd.version + '/LG_webOS_TV_Emulator.sh &'
+                    if platform.system() == 'Windows':
+                        command = 'cd ' + os.environ['LG_WEBOS_TV_SDK_HOME'] + '\\Emulator\\v' + vd.version + ' & LG_webOS_TV_Emulator.bat'
+                    elif platform.system() == 'Darwin':
+                        command = 'open ' + os.environ['LG_WEBOS_TV_SDK_HOME'] + '/Emulator/v' + vd.version + '/LG_webOS_TV_Emulator_RCU.app &'
+                    else:
+                        command = os.environ['LG_WEBOS_TV_SDK_HOME'] + '/Emulator/v' + vd.version + '/LG_webOS_TV_Emulator.sh &'
                     # print("please run : chmod +x " +  os.environ['LG_WEBOS_TV_SDK_HOME'] + "/Resources/Jre/bin/*" )
                 else:
                     print("webos-emulator : please check installation of TV Emulator")
@@ -262,7 +267,7 @@ def start_vd(vd: WebosEmulator):
             
             if vd.product == "ose":
                 if subprocess.call(command, stdin=STDIN , stdout=subprocess.DEVNULL,  stderr=get_stderr()) != 0:
-                    print("webos-emulator : start error")
+                    print("webos-emulator : TV Emulator is needed")
                     return False
             else:
                 if subprocess.call(command, stdin=STDIN , stdout=subprocess.DEVNULL,  shell=True, stderr=get_stderr()) != 0:
