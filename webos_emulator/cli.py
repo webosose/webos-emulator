@@ -1,5 +1,5 @@
 """
-  Copyright (c) 2022-2023 LG Electronics Inc.
+  Copyright (c) 2022-2024 LG Electronics Inc.
   SPDX-License-Identifier: MIT
 """
 
@@ -72,6 +72,8 @@ def main():
     product = "ose"
     name,uuid,product,version = validate_vd_name(args.vd, False)
     if name == "__VBOX_NOT_INSTALLED__":
+        return 1
+    if name == "__VBOX_DRV_KERNEL_PROBLEM_":
         return 1
 
     if args.vd:

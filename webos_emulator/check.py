@@ -1,5 +1,5 @@
 """
-  Copyright (c) 2022-2023 LG Electronics Inc.
+  Copyright (c) 2022-2024 LG Electronics Inc.
   SPDX-License-Identifier: MIT
 """
 
@@ -100,14 +100,20 @@ def validate_vd_name(name, listing):
     except:
         print("webos-emulator : Please install virtualbox and set the PATH variable in the system envrionment.")
         print("On Windows, please refer to https://www.webosose.org/docs/tools/sdk/emulator/virtualbox-emulator/emulator-user-guide/#setting-the-path-on-windows")
-        return ("__VBOX_NOT_INSTALLED__", "", "")
+        return ("__VBOX_NOT_INSTALLED__", "", "", "")
+
     dl = []
     product = "ose"
     rname = ""
     ruuid = ""
     version = ""
+    if 'vboxconfig' in str(result, hostos_encoding):
+        print("webos-emulator : Please recompile the kernel module and install.")
+        print(str(result, hostos_encoding))
+        return ("__VBOX_DRV_KERNEL_PROBLEM_", "", "", "")
     result = str(result, hostos_encoding).split('\n')
     running_vm = ""
+
     if result2:
         result2 = str(result2, hostos_encoding).split('\n')
         running_vm = result2[0].split("\" ")[0][1:]
