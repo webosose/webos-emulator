@@ -140,7 +140,11 @@ def validate_vd_name(name, listing):
                 ruuid = j
                 if rname.startswith("LG webOS TV Emulator"):
                     product = "tv"
-                    version = rname.split("LG webOS TV Emulator ")[1]
+                    version = rname.split("LG webOS TV Emulator")[1]
+                    if version == "":
+                        version = "1.2.0"
+                    else:
+                        version = version[1:]
                 elif rname.startswith("LG webOS SIGNAGE Emulator"):
                     product = "signage"
                     version = rname.split("LG webOS SIGNAGE Emulator ")[1]
@@ -201,7 +205,7 @@ def get_storage_name(name):
 
 def is_safe_to_create(name): # TODO: need to rename the method name
     """Check if the emulator is running
-    
+
     :param name:
         the name of emulator
     """
